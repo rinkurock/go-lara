@@ -14,7 +14,9 @@
 *.out
 
 bid
-
+app
 .idea/
 .vscode/
 app%
+vendor/
+config.json
