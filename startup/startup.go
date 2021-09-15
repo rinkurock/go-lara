@@ -6,6 +6,9 @@ import (
 	"app/middlewares"
 	"app/routes"
 	"app/services/bigCache"
+	"app/services/database"
+	"app/services/logger"
+	"app/services/redis"
 	"context"
 	"net/http"
 	"os"
@@ -26,6 +29,17 @@ func Initialize() {
 	e := echo.New()
 	routes.DefineRoutes(e)
 	middlewares.ApplyMiddleware(e)
+
+	//initialize logger with config
+	logger.Initialize()
+
+	//initialize mysql database
+	database.MySqlInitDatabase()
+	defer database.MySqlClose()
+
+	//Redis
+	redis.Initialize()
+	defer redis.CloseRedis()
 
 	//Configure in-memory cache
 	if conf.Cache.InMemory.GetEnabled || conf.Cache.InMemory.PutEnabled {
