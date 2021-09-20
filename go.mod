@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/allegro/bigcache v1.2.1
+	github.com/davecgh/go-spew v1.1.1
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.6.0
