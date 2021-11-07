@@ -11,11 +11,11 @@ func DefineRoutes(e *echo.Echo) {
 	v1 := e.Group("/v1")
 
 	s := v1.Group("/sample")
-	s.GET("/get", sample.SampleGet)
-	s.POST("/post", sample.SamplePost)
-	s.PUT("/post", sample.SamplePut)
-	s.PATCH("/post", sample.SamplePatch)
-	s.DELETE("/post", sample.SampleDelete)
+	s.GET("", sample.SampleGet)
+	s.POST("", sample.SamplePost)
+	s.PATCH("/:id", sample.SamplePatch)
+	s.PUT("/:id", sample.SamplePut)
+	s.DELETE("/:id", sample.SampleDelete)
 
 	v1.GET("/hello/world", auth.HelloWorld)
 }

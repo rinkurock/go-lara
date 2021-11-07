@@ -21,6 +21,13 @@ type CustomEchoContext struct {
 	allQueryParams         map[string]interface{}
 }
 
+// func (cc *CustomEchoContext) HasData() bool {
+// 	if _, err := cc.FormValuesInMap(); err == nil {
+// 		return true
+// 	}
+// 	return false
+// }
+
 func (cc *CustomEchoContext) HasFormKey(key string) bool {
 	if all, err := cc.FormValuesInMap(); err == nil {
 		if MapValue(key, all) != nil {

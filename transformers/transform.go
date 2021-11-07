@@ -24,3 +24,8 @@ func BodyParsingErrorResponse(c *h.CustomEchoContext, err error) error {
 		"error": "request body parsing error",
 	})
 }
+func NotFoundRespose(c *h.CustomEchoContext, message string) error {
+	return c.JSON(http.StatusNotFound, map[string]interface{}{
+		"error": message,
+	})
+}

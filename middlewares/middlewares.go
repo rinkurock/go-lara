@@ -20,5 +20,6 @@ func ApplyMiddleware(e *echo.Echo) {
 
 	e.Use(middleware.CORS())
 	e.Use(middleware.Secure())
-	e.Use(middleware.Recover())
+	// Recover FROM ANY ERROR
+	//e.Use(middleware.Recover())
 }
