@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"app/config"
+	c "app/config"
 	h "app/helpers"
 )
 
@@ -19,7 +19,7 @@ var once sync.Once
 
 func Initialize() {
 	once.Do(func() {
-		_conf := config.GetConfig().Redis
+		_conf := c.GetConfig().Redis
 
 		log.Infoln("connecting to redis at :", _conf.Host, _conf.Port, " ....")
 
@@ -59,14 +59,28 @@ func Get(key string, out interface{}) error {
 		log.Error(err)
 		return err
 	}
+	err = json.Unmarshal([]byte(value), &out)
+	return err
 
+}
+
+func Del(key string) error {
+	_, error := redisClient.Del(key).Result()
+	return error
+}
+func GetByteArrayToMap(key string, out interface{}) error {
+	value, err := redisClient.Get(key).Result()
+	if err != nil {
+		log.Error(err)
+		return err
+	}
 	m, err := h.ByteArrayToMap([]byte(value))
 	if err != nil {
 		log.Error(err)
 		return err
 	}
 	err = h.MapToStructWeak(m, &out, true)
-	//err = json.Unmarshal([]byte(value), &out)
+
 	return err
 }
 

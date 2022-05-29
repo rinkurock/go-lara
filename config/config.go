@@ -67,6 +67,12 @@ type _Config struct {
 		GoMaxProcess       int    `mapstructure:"go_max_process" json:"go_max_process"`
 		ResponseLog        bool   `mapstructure:"response_log" json:"response_log"`
 	} `mapstructure:"others" json:"others"`
+	Services struct {
+		Sample struct {
+			Host    string        `mapstructure:"host" json:"host"`
+			Timeout time.Duration `mapstructure:"timeout" json:"timeout"` // TIME IN  MILLI SECOND
+		} `mapstructure:"sample" json:"sample"`
+	} `mapstructure:"services" json:"services"`
 }
 
 func GetConfig() *_Config {
@@ -203,4 +209,6 @@ func setDefaultValues() {
 
 	conf.Others.GoMaxProcess = -1
 	conf.Others.ResponseLog = false
+	conf.Services.Sample.Host = ""
+	conf.Services.Sample.Timeout = 5000 // 5 Seconds
 }

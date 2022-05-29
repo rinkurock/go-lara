@@ -1,7 +1,7 @@
-package bigCache
+package bigcache
 
 import (
-	"app/config"
+	c "app/config"
 	"encoding/json"
 	"errors"
 	"sync"
@@ -16,7 +16,7 @@ var _cache *bigcache.BigCache
 
 func Initialize() {
 	once.Do(func() {
-		ttl := time.Duration(config.GetConfig().Cache.InMemory.TTLInSec) * time.Second
+		ttl := time.Duration(c.GetConfig().Cache.InMemory.TTLInSec) * time.Second
 		bConf := bigcache.DefaultConfig(ttl)
 		bConf.CleanWindow = ttl
 		c, err := bigcache.NewBigCache(bConf)

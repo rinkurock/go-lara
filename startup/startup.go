@@ -2,13 +2,14 @@ package startup
 
 import (
 	"app/config"
+	"app/conn"
+	bc "app/database/big_cache"
+	m "app/database/mysql"
+	r "app/database/redis"
 	h "app/helpers"
 	"app/middlewares"
 	"app/routes"
-	"app/services/bigCache"
-	"app/services/database"
 	"app/services/logger"
-	"app/services/redis"
 	"context"
 	"net/http"
 	"os"
@@ -34,18 +35,20 @@ func Initialize() {
 	logger.Initialize()
 
 	//initialize mysql database
-	database.MySqlInitDatabase()
-	defer database.MySqlClose()
+	m.InitDatabase()
+	defer m.Close()
 
 	//Redis
-	redis.Initialize()
-	defer redis.CloseRedis()
+	r.Initialize()
+	defer r.CloseRedis()
 
 	//Configure in-memory cache
 	if conf.Cache.InMemory.GetEnabled || conf.Cache.InMemory.PutEnabled {
-		bigCache.Initialize()
-		defer bigCache.Close()
+		bc.Initialize()
+		defer bc.Close()
 	}
+	// Http Service Connection
+	conn.ServiceConnection()
 
 	s := &http.Server{
 		Addr:         ":" + h.ToString(conf.Server.Port),

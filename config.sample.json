@@ -1,77 +1,83 @@
 {
-    "server": {
-        "port": 8080,
-        "read_timeout": 4,
-        "write_timeout": 4
-    },
-    "database": {
-        "host": "127.0.0.1",
-        "port": 3306,
-        "username": "root",
-        "password": "c0mm0n",
-        "database_name": "bidit",
-        "conn_max_lifetime": 30,
-        "max_idle_connections": 1,
-        "max_open_connections": 2,
-        "debug" : true
-    },
-    "redis": {
-        "host": "127.0.0.1",
-        "port": 6379,
-        "password": "",
-        "dial_timeout": 0,
-        "ttl_in_sec": 21600
-    },
-    "others": {
-        "consul_watch": false,
-        "consul_watch_timeout": 5,
-        "log_format": "json",
-        "log_level": "",
-        "go_max_process": 50,
-      	"response_log" : true
-    },
-    "cache": {
-        "put_enabled": true,
-        "get_enabled": true
-    },        
-    "throttle": {
-        "global": {
-            "active": true,
-            "apply": [
-              	{
-                    "uri": "/v2/auth/country",
-                    "limit": 5,
-                    "in_time_sec": 120,
-                    "lock_in_sec": 300,
-                    "multiplier": 2
-                },
-                {
-                    "uri": "/v2/auth/register",
-                    "limit": 5,
-                    "in_time_sec": 120,
-                    "lock_in_sec": 300,
-                    "multiplier": 0
-                },
-                {
-                    "uri": "/v2/auth/verify",
-                    "limit": 5,
-                    "in_time_sec": 120,
-                    "lock_in_sec": 300,
-                    "multiplier": 0
-                }
-            ]
-        },
-        "custom": {
-            "active": true,
-            "apply": [
-                {
-                    "uri": "/v2/auth/login",
-                    "limit": 5,
-                    "in_time_sec": 120,
-                    "lock_in_sec": 300,
-                    "multiplier": 0
-                }
-            ]
-        }
+  "server": {
+    "port": 8080,
+    "read_timeout": 4,
+    "write_timeout": 4
+  },
+  "database": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "username": "DATABASE_USERNAME",
+    "password": "DATABASE_PASSWORD",
+    "database_name": "DATABASE_NAME",
+    "conn_max_lifetime": 30,
+    "max_idle_connections": 1,
+    "max_open_connections": 2,
+    "debug": true
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "password": "",
+    "dial_timeout": 0,
+    "ttl_in_sec": 21600
+  },
+  "others": {
+    "consul_watch": false,
+    "consul_watch_timeout": 5,
+    "log_format": "json",
+    "log_level": "",
+    "go_max_process": 50,
+    "response_log": true
+  },
+  "cache": {
+    "put_enabled": true,
+    "get_enabled": true
+  },
+  "services": {
+    "sample": {
+      "host": "http://127.0.0.1:8080",
+      "timeout": 5000
     }
+  },
+  "throttle": {
+    "global": {
+      "active": true,
+      "apply": [
+        {
+          "uri": "/v2/auth/country",
+          "limit": 5,
+          "in_time_sec": 120,
+          "lock_in_sec": 300,
+          "multiplier": 2
+        },
+        {
+          "uri": "/v2/auth/register",
+          "limit": 5,
+          "in_time_sec": 120,
+          "lock_in_sec": 300,
+          "multiplier": 0
+        },
+        {
+          "uri": "/v2/auth/verify",
+          "limit": 5,
+          "in_time_sec": 120,
+          "lock_in_sec": 300,
+          "multiplier": 0
+        }
+      ]
+    },
+    "custom": {
+      "active": true,
+      "apply": [
+        {
+          "uri": "/v2/auth/login",
+          "limit": 5,
+          "in_time_sec": 120,
+          "lock_in_sec": 300,
+          "multiplier": 0
+        }
+      ]
+    }
+  }
 }

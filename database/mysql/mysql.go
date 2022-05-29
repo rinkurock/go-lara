@@ -1,4 +1,4 @@
-package database
+package mysql
 
 import (
 	"fmt"
@@ -9,15 +9,15 @@ import (
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 
-	"app/config"
+	c "app/config"
 )
 
 var _database *gorm.DB
 var once sync.Once
 
-func MySqlInitDatabase() {
+func InitDatabase() {
 	once.Do(func() {
-		conf := config.GetConfig().Database
+		conf := c.GetConfig().Database
 
 		//[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]       //db_user:password@tcp(localhost:3306)/my_db
 		connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4,utf8&parseTime=True&loc=Local", conf.UserName, conf.Password, conf.Host, conf.Port, conf.DatabaseName)
@@ -42,7 +42,7 @@ func MySqlInitDatabase() {
 
 type InTransaction func(tx *gorm.DB) error
 
-func MySqlDoInTransaction(fn InTransaction) error {
+func DoInTransaction(fn InTransaction) error {
 	//Start Transaction and Check if database begin-transactions causes any errors
 	tx := _database.Begin()
 	if tx.Error != nil {
@@ -75,7 +75,7 @@ func MySqlDoInTransaction(fn InTransaction) error {
 	return nil
 }
 
-func MySqlClose() {
+func Close() {
 	if err := _database.Close(); err != nil {
 		log.Errorln("error closing database", err.Error())
 	} else {
@@ -84,69 +84,14 @@ func MySqlClose() {
 }
 
 const (
-	OAuthAccessTokenTable      = "oauth_access_tokens"
-	OAuthClientTable           = "oauth_clients"
-	OAuthSessionsTable         = "oauth_sessions"
-	OathAccessTokenScopesTable = "oauth_access_token_scopes"
-	UserTable                  = "users"
-	UserSocialProfile          = "user_social_profiles"
-	DriverMetaTable            = "drivers_meta"
-	UserMetaTable              = "users_meta"
-	AuthOtpTable               = "authentication_otp"
-	CountryTable               = "countries"
-	CloneTable                 = "clone_app"
-	PasswordResetTable         = "password_resets"
-	OtpVerificationTable       = "otp_verification"
+	UserTable = "users"
 )
 
 func Db() *gorm.DB {
 	return _database
 }
-
-func OAuthClientTokenDb() *gorm.DB {
-	return _database.Table(OAuthClientTable)
-}
-func OAuthAccessTokenDb() *gorm.DB {
-	return _database.Table(OAuthAccessTokenTable)
-}
-
-func OAuthSessionsDb() *gorm.DB {
-	return _database.Table(OAuthSessionsTable)
-}
-
-func OathAccessTokenScopesDb() *gorm.DB {
-	return _database.Table(OathAccessTokenScopesTable)
-}
-
 func UserDb() *gorm.DB {
 	return _database.Table(UserTable)
-}
-
-func UserSocialProfileDb() *gorm.DB {
-	return _database.Table(UserSocialProfile)
-}
-func UserMeta() *gorm.DB {
-	return _database.Table(UserMetaTable)
-}
-
-func DriverMetaDb() *gorm.DB {
-	return _database.Table(DriverMetaTable)
-}
-func AuthOtpDb() *gorm.DB {
-	return _database.Table(AuthOtpTable)
-}
-func CountryDb() *gorm.DB {
-	return _database.Table(CountryTable)
-}
-func CloneApp() *gorm.DB {
-	return _database.Table(CloneTable)
-}
-
-func PasswordReset() *gorm.DB {
-	return _database.Table(PasswordResetTable)
-}
-func OtpVerification() *gorm.DB {
-	return _database.Table(OtpVerificationTable)
 }
 func Ping() error {
 	return _database.DB().Ping()

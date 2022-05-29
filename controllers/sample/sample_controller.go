@@ -41,7 +41,7 @@ func SamplePatch(echoContext echo.Context) error {
 	var req models.SamplePatchReq
 	id := h.ToInt(c.Param("id"))
 	if id != 99 {
-		return t.NotFoundRespose(c, "Profile not founf!")
+		return t.NotFoundResponse(c, "Profile not found!")
 	}
 	err := c.Bind(&req)
 	if err != nil {
@@ -53,7 +53,7 @@ func SamplePatch(echoContext echo.Context) error {
 		return c.JSON(v.StatusCode, v.Response)
 	}
 
-	res := repo.PatchPesponse(req)
+	res := repo.PatchResponse(req)
 	return c.JSON(http.StatusOK, res)
 }
 
@@ -91,7 +91,7 @@ func _validateSamplePost(c *h.CustomEchoContext, data models.SamplePostReq) vali
 		m["code"] = "valid code required"
 		v.Status = true
 	}
-	if !c.HasJsonFormKey("term_accepted") || data.TermAccepted != true {
+	if !c.HasJsonFormKey("term_accepted") || !data.TermAccepted{
 		m["term_accepted"] = "valid term_accepted required"
 		v.Status = true
 	}
@@ -127,7 +127,7 @@ func _validateSamplePatch(c *h.CustomEchoContext, data models.SamplePatchReq) va
 		}
 	}
 	if c.HasFormKey("term_accepted") {
-		if data.TermAccepted != true {
+		if !data.TermAccepted{
 			m["term_accepted"] = "valid term_accepted required"
 			v.Status = true
 		}

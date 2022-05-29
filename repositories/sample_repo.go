@@ -1,6 +1,11 @@
 package repo
 
-import m "app/models"
+import (
+	m "app/models"
+	"app/services/api/sample"
+
+	"github.com/davecgh/go-spew/spew"
+)
 
 func getSampleData() m.SampleRes {
 	d := m.SampleRes{}
@@ -14,6 +19,7 @@ func getSampleData() m.SampleRes {
 }
 
 func SampleGetResponse() m.SamplePostRes {
+	spew.Dump(sample.PostData(824))
 	d := m.SamplePostRes{}
 	data := getSampleData()
 	d.Data.Id = data.Id
@@ -31,7 +37,7 @@ func GetPostResponse(req m.SamplePostReq) m.SamplePostRes {
 	data.Data.Id = 99
 	return data
 }
-func PatchPesponse(req m.SamplePatchReq) m.SamplePostRes {
+func PatchResponse(req m.SamplePatchReq) m.SamplePostRes {
 	d := m.SamplePostRes{}
 	data := getSampleData()
 	d.Data.Id = data.Id
